@@ -67,6 +67,20 @@ router.get("/", async function (req, res, next) {
  * Authorization required: none
  */
 
+router.get("/filter", async function (req, res, next) {
+  try {
+    // if (!req.body.length) {
+    //   throw new ExpressError("missing required data", 400)
+    // }
+    console.log('############################')
+    console.log(req.body)
+    const companies = await Company.filter(req.body.data);
+    return res.json({ companies });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 router.get("/:handle", async function (req, res, next) {
   try {
     const company = await Company.get(req.params.handle);
@@ -75,6 +89,8 @@ router.get("/:handle", async function (req, res, next) {
     return next(err);
   }
 });
+
+
 
 /** PATCH /[handle] { fld1, fld2, ... } => { company }
  *

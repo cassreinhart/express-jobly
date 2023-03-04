@@ -111,6 +111,85 @@ describe("get", function () {
   });
 });
 
+/************************************** filter */
+
+describe("filter", function () {
+  test("works for name filter", async function () {
+    let companies = await Company.filter({
+      "data": {
+          "filterVar": "name",
+          "searchTerm": "1" 
+      }
+    });
+    console.log(companies)
+
+    expect(companies).toEqual([
+      {
+        handle: "c1",
+        name: "C1",
+        description: "Desc1",
+        numEmployees: 1,
+        logoUrl: "http://c1.img"
+      }
+    ])
+  });
+
+  test("works for minEmployee filter", async function () {
+    let companies = await Company.filter({
+      "data": {
+          "filterVar": "minEmployees",
+          "searchTerm": "3" 
+      }
+    });
+
+    expect(companies).toEqual([
+      {
+        handle: "c3",
+        name: "C3",
+        description: "Desc3",
+        numEmployees: 3,
+        logoUrl: "http://c3.img"
+      }
+    ])
+  });
+
+  test("works for maxEmployee filter", async function () {
+    let companies = await Company.filter({
+      "data": {
+          "filterVar": "maxEmployees",
+          "searchTerm": "2" 
+      }
+    });
+
+    expect(companies).toEqual([
+      {
+        handle: "c1",
+        name: "C1",
+        description: "Desc1",
+        numEmployees: 1,
+        logoUrl: "http://c1.img"
+      },
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img"
+      },
+    ])
+  });
+
+  test("not found if no match", async function () {
+    try {
+      await Company.filter("a");
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});
+
+
 /************************************** update */
 
 describe("update", function () {

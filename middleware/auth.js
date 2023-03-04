@@ -20,7 +20,11 @@ function authenticateJWT(req, res, next) {
     const authHeader = req.headers && req.headers.authorization;
     if (authHeader) {
       const token = authHeader.replace(/^[Bb]earer /, "").trim();
-      res.locals.user = jwt.verify(token, SECRET_KEY);
+      res.locals.user = jwt.verify(token, SECRET_KEY); //is res.locals similar to local storage??
+      
+      /** The res.locals property is an object that contains response local variables scoped to the 
+       * request and because of this, it is only available to the view(s) rendered during that 
+       * request/response cycle (if any). */
     }
     return next();
   } catch (err) {

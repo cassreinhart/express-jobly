@@ -61,6 +61,40 @@ class Company {
     return companiesRes.rows;
   }
 
+  /** Given string for name, minEmployees, and/or maxEmployees, return data about matching companies.
+   *
+   * Returns [{ handle, name, description, numEmployees, logoUrl, jobs }, ...]
+   *
+   * Throws NotFoundError if not found.
+   **/
+
+  static async filter(data) {
+    const {filterVar, searchTerm} = data;
+    let endQuery;
+
+    console.log(filterVar)
+    if (filterVar === 'name') {
+      endQuery = `WHERE name ILIKE '%${searchTerm}%'
+      ORDER BY ${filterVar}`
+    }
+    if (filterVar === 'minEmployees') {
+      endQuery = `WHERE num_employees >= ${+searchTerm}`
+    }
+    if (filterVar === 'maxEmployees') {
+      endQuery = `WHERE num_employees <= ${+searchTerm}`
+    }
+
+    const companiesRes = await db.query(
+      `SELECT handle,
+                  name,
+                  description,
+                  num_employees AS "numEmployees",
+                  logo_url AS "logoUrl"
+           FROM companies
+           ` + `${endQuery}`
+    )
+    return companiesRes.rows;
+  }
   /** Given a company handle, return data about company.
    *
    * Returns { handle, name, description, numEmployees, logoUrl, jobs }

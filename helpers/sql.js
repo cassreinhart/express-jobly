@@ -5,10 +5,10 @@ const { BadRequestError } = require("../expressError");
 // maps data to enter into SQL query, complete w/SQL variables ($1, $2, etc.)
 //returns an object: {
 //  setCols:  ['"first_name"=$1', '"age"=$2'],
-//  values: {
-//    firstName: 'Aliya',
-//    age: 32
-//  }
+//  values: [
+//   'Aliya',
+//   32
+// ]
 //}
 
 function sqlForPartialUpdate(dataToUpdate, jsToSql) {

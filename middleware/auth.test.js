@@ -18,7 +18,7 @@ describe("authenticateJWT", function () {
     expect.assertions(2);
      //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
-    const req = { headers: { authorization: `Bearer ${testJwt}` } };
+    const req = { headers: { authorization: `Bearer ${testJwt}` } }; //pass in token 
     const res = { locals: {} };
     const next = function (err) {
       expect(err).toBeFalsy();
@@ -35,24 +35,24 @@ describe("authenticateJWT", function () {
 
   test("works: no header", function () {
     expect.assertions(2);
-    const req = {};
+    const req = {}; //no header here...
     const res = { locals: {} };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
     authenticateJWT(req, res, next);
-    expect(res.locals).toEqual({});
+    expect(res.locals).toEqual({}); //no user...
   });
 
   test("works: invalid token", function () {
     expect.assertions(2);
-    const req = { headers: { authorization: `Bearer ${badJwt}` } };
+    const req = { headers: { authorization: `Bearer ${badJwt}` } }; //invalid token
     const res = { locals: {} };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
     authenticateJWT(req, res, next);
-    expect(res.locals).toEqual({});
+    expect(res.locals).toEqual({}); //no user
   });
 });
 

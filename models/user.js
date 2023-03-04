@@ -66,7 +66,7 @@ class User {
     );
 
     if (duplicateCheck.rows[0]) {
-      throw new BadRequestError(`Duplicate username: ${username}`);
+      throw new BadRequestError(`Username taken: ${username}`);
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
@@ -160,11 +160,11 @@ class User {
    */
 
   static async update(username, data) {
-    if (data.password) {
+    if (data.password) { //if changing a password, hash new pwd
       data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
     }
 
-    const { setCols, values } = sqlForPartialUpdate(
+    const { setCols, values } = sqlForPartialUpdate( //in testCommon??
         data,
         {
           firstName: "first_name",
@@ -186,7 +186,7 @@ class User {
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
 
-    delete user.password;
+    delete user.password; //what does this line do and why??????
     return user;
   }
 

@@ -1,6 +1,15 @@
 const { BadRequestError } = require("../expressError");
 
-// THIS NEEDS SOME GREAT DOCUMENTATION.
+// Accepts an object of data w/ key value pairs {{columnName: dataToEnter}, ...}
+// And an object matching JS var names to SQL col names {{jsVarName: sqlColumnName}, ...}
+// maps data to enter into SQL query, complete w/SQL variables ($1, $2, etc.)
+//returns an object: {
+//  setCols:  ['"first_name"=$1', '"age"=$2'],
+//  values: {
+//    firstName: 'Aliya',
+//    age: 32
+//  }
+//}
 
 function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   const keys = Object.keys(dataToUpdate);
@@ -12,8 +21,8 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   );
 
   return {
-    setCols: cols.join(", "),
-    values: Object.values(dataToUpdate),
+    setCols: cols.join(", "), 
+    values: Object.values(dataToUpdate), //sets values to be the values for SQL to enter (in order)
   };
 }
 

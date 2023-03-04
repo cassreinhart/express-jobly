@@ -95,6 +95,8 @@ class Company {
     )
     return companiesRes.rows;
   }
+
+
   /** Given a company handle, return data about company.
    *
    * Returns { handle, name, description, numEmployees, logoUrl, jobs }

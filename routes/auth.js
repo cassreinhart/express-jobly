@@ -21,16 +21,16 @@ const { BadRequestError } = require("../expressError");
 
 router.post("/token", async function (req, res, next) {
   try {
-    const validator = jsonschema.validate(req.body, userAuthSchema);
+    const validator = jsonschema.validate(req.body, userAuthSchema); //is there username & pwd in the req.body?
     if (!validator.valid) {
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }
 
     const { username, password } = req.body;
-    const user = await User.authenticate(username, password);
-    const token = createToken(user);
-    return res.json({ token });
+    const user = await User.authenticate(username, password); //check password & hashed pwd
+    const token = createToken(user); //create a token for the user
+    return res.json({ token }); //give back the token in the response
   } catch (err) {
     return next(err);
   }
@@ -48,7 +48,7 @@ router.post("/token", async function (req, res, next) {
 
 router.post("/register", async function (req, res, next) {
   try {
-    const validator = jsonschema.validate(req.body, userRegisterSchema);
+    const validator = jsonschema.validate(req.body, userRegisterSchema); //requires all fields to validate (length req & email format check)
     if (!validator.valid) {
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);

@@ -164,7 +164,7 @@ class User {
       data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
     }
 
-    const { setCols, values } = sqlForPartialUpdate( //in testCommon??
+    const { setCols, values } = sqlForPartialUpdate( //in testCommon, maps data & col namesfor query
         data,
         {
           firstName: "first_name",

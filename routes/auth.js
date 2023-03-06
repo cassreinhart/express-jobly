@@ -48,8 +48,10 @@ router.post("/token", async function (req, res, next) {
 
 router.post("/register", async function (req, res, next) {
   try {
+    console.log(req.body)
     const validator = jsonschema.validate(req.body, userRegisterSchema); //requires all fields to validate (length req & email format check)
     if (!validator.valid) {
+      console.log("INVALID REQUEST")
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }

@@ -115,13 +115,21 @@ describe("get", function () {
 
 describe("filter", function () {
   test("works for name filter", async function () {
-    let companies = await Company.filter({
+    let data = {
       "data": {
           "filterVar": "name",
           "searchTerm": "1" 
       }
-    });
+    }
+
+    console.log(data.data.filterVar) //prints name
+    console.log(data.data.searchTerm)
+    let companies = await Company.filter({
+      "filterVar": "name",
+      "searchTerm": "1" 
+  });
     console.log(companies)
+    
 
     expect(companies).toEqual([
       {
@@ -136,11 +144,9 @@ describe("filter", function () {
 
   test("works for minEmployee filter", async function () {
     let companies = await Company.filter({
-      "data": {
           "filterVar": "minEmployees",
           "searchTerm": "3" 
-      }
-    });
+      });
 
     expect(companies).toEqual([
       {
@@ -155,11 +161,9 @@ describe("filter", function () {
 
   test("works for maxEmployee filter", async function () {
     let companies = await Company.filter({
-      "data": {
           "filterVar": "maxEmployees",
           "searchTerm": "2" 
-      }
-    });
+      });
 
     expect(companies).toEqual([
       {

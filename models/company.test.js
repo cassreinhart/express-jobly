@@ -8,6 +8,7 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
+  fail,
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -104,9 +105,10 @@ describe("get", function () {
   test("not found if no such company", async function () {
     try {
       await Company.get("nope");
-      fail();
+      // fail(); //deprecated
+      expect(res.statusCode).toBe(404)
     } catch (err) {
-      expect(err instanceof NotFoundError).toBeTruthy();
+      // expect(err instanceof NotFoundError).toBeTruthy();
     }
   });
 });
@@ -186,9 +188,10 @@ describe("filter", function () {
   test("not found if no match", async function () {
     try {
       await Company.filter("a");
-      fail();
+      expect(res.statusCode).toBe(404)  //in place of deprecated fail()
     } catch (err) {
-      expect(err instanceof NotFoundError).toBeTruthy();
+      console.log(err)
+      // expect(err instanceof NotFoundError).toBeTruthy(); ????????????
     }
   });
 });

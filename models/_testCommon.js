@@ -42,10 +42,17 @@ async function commonAfterAll() {
   await db.end();
 }
 
+function fail(reason = "fail was called in a test.") {
+  throw new Error(reason);
+}
+
+global.fail = fail;
+
 
 module.exports = {
   commonBeforeAll,
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
+  fail
 };

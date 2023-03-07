@@ -68,10 +68,21 @@ function ensureCurrentUser(req, res, next) {
   } 
 }
 
+function ensureCurrentUserOrAdmin(req, res, next) {
+  try {
+    if (res.locals.user.username === req.params.username || res.locals.user.isAdmin === true) {
+      return next();
+    }
+    throw new UnauthorizedError();
+  } catch (err) {
+    return next(err);
+  } 
+}
 
 module.exports = {
   authenticateJWT,
   ensureLoggedIn,
   ensureAdmin,
-  ensureCurrentUser
+  ensureCurrentUser,
+  ensureCurrentUserOrAdmin,
 };

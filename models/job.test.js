@@ -95,11 +95,9 @@ describe("get", function () {
 
   test("not found if no such job", async function () {
     try {
-      await Job.get("nope");
-      // fail(); //deprecated
-      expect(res.statusCode).toBe(404)
+      await Job.get(999);
     } catch (err) {
-      // expect(err instanceof NotFoundError).toBeTruthy();
+      expect(err instanceof NotFoundError).toBeTruthy();
     }
   });
 });
@@ -108,21 +106,10 @@ describe("get", function () {
 
 describe("filter", function () {
   test("works for title filter", async function () {
-    let data = {
-      "data": {
-          "filterVar": "title",
-          "searchTerm": "1" 
-      }
-    }
-
-    console.log(data.data.filterVar) 
-    console.log(data.data.searchTerm)
     let jobs = await Job.filter({
       "filterVar": "title",
       "searchTerm": "1" 
   });
-    console.log(jobs)
-    
 
     expect(jobs).toEqual([
         {
@@ -186,11 +173,12 @@ describe("filter", function () {
 
   test("not found if no match", async function () {
     try {
-      const res = await Job.filter("a");
-      expect(res.statusCode).toBe(404)  //in place of deprecated fail()
+      await Job.filter({
+        "filterVar": "title",
+        "searchTerm": "badsearch" 
+    });
     } catch (err) {
-      console.log(err)
-      // expect(err instanceof NotFoundError).toBeTruthy(); ????????????
+      expect(err instanceof NotFoundError).toBeTruthy();
     }
   });
 });

@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../db");
-const { BadRequestError, NotFoundError } = require("../expressError");
+const { NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 /** Related functions for jobs. */
@@ -48,9 +48,9 @@ class Job {
     return jobsRes.rows;
   }
 
-  /** Given string for name, minEmployees, and/or maxEmployees, return data about matching jobs.
+  /** Given string for title, minSalary, or hasEquity, return data about matching jobs.
    *
-   * Returns [{ handle, name, description, numEmployees, logoUrl, jobs }, ...]
+   * Returns [{ id, title, salary, equity, companyHandle }, ...]
    *
    * Throws NotFoundError if not found.
    **/
@@ -114,9 +114,9 @@ class Job {
    * This is a "partial update" --- it's fine if data doesn't contain all the
    * fields; this only changes provided ones.
    *
-   * Data can include: {name, description, numEmployees, logoUrl}
+   * Data can include: {title, salary, equity, companyHandle}
    *
-   * Returns {handle, name, description, numEmployees, logoUrl}
+   * Returns {id, title, salary, equity, companyHandle}
    *
    * Throws NotFoundError if not found.
    */

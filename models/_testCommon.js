@@ -9,6 +9,8 @@ async function commonBeforeAll() {
   // noinspection SqlWithoutWhere
   await db.query("DELETE FROM users");
 
+  await db.query("DELETE FROM jobs");
+
   await db.query(`
     INSERT INTO companies(handle, name, num_employees, description, logo_url)
     VALUES ('c1', 'C1', 1, 'Desc1', 'http://c1.img'),
@@ -28,6 +30,12 @@ async function commonBeforeAll() {
         await bcrypt.hash("password1", BCRYPT_WORK_FACTOR),
         await bcrypt.hash("password2", BCRYPT_WORK_FACTOR),
       ]);
+
+  await db.query(`
+  INSERT INTO jobs(id, title, salary, equity, company_handle)
+  VALUES (1, 'J1', 100000, 0.01, 'c1'),
+         (2, 'J2', 200000, 0.02, 'c2'),
+         (3, 'J3', 300000, 0.03, 'c3')`);
 }
 
 async function commonBeforeEach() {
@@ -42,11 +50,11 @@ async function commonAfterAll() {
   await db.end();
 }
 
-function fail(reason = "fail was called in a test.") {
-  throw new Error(reason);
-}
+// function fail(reason = "fail was called in a test.") {
+//   throw new Error(reason);
+// }
 
-global.fail = fail;
+// global.fail = fail;
 
 
 module.exports = {
@@ -54,5 +62,4 @@ module.exports = {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
-  fail
 };

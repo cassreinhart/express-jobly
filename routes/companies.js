@@ -52,7 +52,7 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   try {
-    const companies = await Company.findAll();
+    let companies = req.body.data ? await Company.filter(req.body.data) : await Company.findAll();
     return res.json({ companies });
   } catch (err) {
     return next(err);
@@ -67,19 +67,19 @@ router.get("/", async function (req, res, next) {
  * Authorization required: none
  */
 
-router.get("/filter", async function (req, res, next) {
-  try {
-    // if (!req.body.length) {
-    //   throw new ExpressError("missing required data", 400)
-    // }
-    console.log('############################')
-    console.log(req.body)
-    const companies = await Company.filter(req.body.data);
-    return res.json({ companies });
-  } catch (err) {
-    return next(err);
-  }
-});
+// router.get("/filter", async function (req, res, next) {
+//   try {
+//     // if (!req.body.length) {
+//     //   throw new ExpressError("missing required data", 400)
+//     // }
+//     console.log('############################')
+//     console.log(req.body)
+//     const companies = await Company.filter(req.body.data);
+//     return res.json({ companies });
+//   } catch (err) {
+//     return next(err);
+//   }
+// });
 
 router.get("/:handle", async function (req, res, next) {
   try {

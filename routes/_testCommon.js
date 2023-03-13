@@ -3,7 +3,10 @@
 const db = require("../db.js");
 const User = require("../models/user");
 const Company = require("../models/company");
+const Job = require("../models/job")
 const { createToken } = require("../helpers/tokens");
+
+const testJobIds = [];
 
 async function commonBeforeAll() {
   // noinspection SqlWithoutWhere
@@ -36,6 +39,13 @@ async function commonBeforeAll() {
         logoUrl: "http://c3.img",
       });
 
+  testJobIds[0] = (await Job.create(
+      { title: "J1", salary: 100000, equity: "0.01", companyHandle: "c1" })).id;
+  testJobIds[1] = (await Job.create(
+      { title: "J2", salary: 200000, equity: "0.02", companyHandle: "c2" })).id;
+  testJobIds[2] = (await Job.create(
+      { title: "J3", salary: 300000, /* equity null */ companyHandle: "c3" })).id;
+
   await User.register({
     username: "u1",
     firstName: "U1F",
@@ -60,6 +70,28 @@ async function commonBeforeAll() {
     password: "password3",
     isAdmin: false,
   });
+
+  // const j1 = await Job.create({
+  //   title: 'J1',
+  //   salary: 100000,
+  //   equity: 0.01,
+  //   companyHandle: 'c1'
+  // });
+  // console.log(j1.id)
+  // const j2 = await Job.create({
+  //   title: 'J2',
+  //   salary: 200000,
+  //   equity: 0.02,
+  //   companyHandle: 'c2'
+  // });
+  // console.log(j2.id)
+  // const j3 = await Job.create({
+  //   title: 'J3',
+  //   salary: 300000,
+  //   equity: 0.03,
+  //   companyHandle: 'c3'
+  // });
+  // console.log(j3.id)
 }
 
 async function commonBeforeEach() {
@@ -76,7 +108,7 @@ async function commonAfterAll() {
 
 
 const u1Token = createToken({ username: "u1", isAdmin: true });
-const u2Token = createToken({username: "u2", isAdmin: false})
+const u2Token = createToken({ username: "u2", isAdmin: false })
 
 
 module.exports = {
@@ -86,4 +118,5 @@ module.exports = {
   commonAfterAll,
   u1Token,
   u2Token,
+  testJobIds,
 };

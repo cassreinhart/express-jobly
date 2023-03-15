@@ -207,10 +207,10 @@ class User {
 
   static async apply(username, jobId) {
     const checkUsername = await db.query(`SELECT username FROM users WHERE username = $1`, [username])
-    if (!checkUsername) throw new NotFoundError(`User not found ${username}`)
+    if (!checkUsername.rows[0]) throw new NotFoundError(`User not found ${username}`)
     
     const checkJobId = await db.query(`SELECT id FROM jobs WHERE id = $1`, [jobId])
-    if (!checkJobId) throw new NotFoundError(`Job not found id:${jobId}`)
+    if (!checkJobId.rows[0]) throw new NotFoundError(`Job not found id:${jobId}`)
 
     let result = await db.query(
       `INSERT INTO applications

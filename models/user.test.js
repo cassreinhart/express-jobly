@@ -246,4 +246,18 @@ describe("apply", function () {
       job_id: testJobIds[1]
     }])
   })
+  test("not found if job not found", async function () {
+    try {
+      await User.apply("u1", 0, "applied");
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+  test("not found if username not found", async function () {
+    try {
+      await User.apply("not-a-user", testJobIds[0], "applied");
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
 })

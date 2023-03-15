@@ -125,6 +125,7 @@ router.delete("/:username", ensureLoggedIn, ensureCurrentUserOrAdmin, async func
 
 router.post("/:username/jobs/:id", ensureCurrentUserOrAdmin, async function (req, res, next) {
   try {
+    console.log(req.params)
     const jobId = +req.params.jobId
     await User.apply(req.params.username, jobId)
     return res.json({applied: jobId})

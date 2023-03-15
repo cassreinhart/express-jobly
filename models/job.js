@@ -124,9 +124,7 @@ class Job {
   static async update(id, data) {
     const { setCols, values } = sqlForPartialUpdate(
         data,
-        {
-          companyHandle: "company_handle"
-        });
+        {});
     const idVarIdx = "$" + (values.length + 1);
 
     const querySql = `UPDATE jobs 
@@ -140,7 +138,7 @@ class Job {
     const result = await db.query(querySql, [...values, id]);
     const job = result.rows[0];
 
-    if (!job) throw new NotFoundError(`No job: ${id}`);
+    if (!job || job === undefined) throw new NotFoundError(`No job: ${id}`);
 
     return job;
   }

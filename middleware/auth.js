@@ -18,16 +18,18 @@ const { UnauthorizedError } = require("../expressError");
 function authenticateJWT(req, res, next) {
   try {
     const authHeader = req.headers && req.headers.authorization;
+    console.log(authHeader)
     if (authHeader) {
       const token = authHeader.replace(/^[Bb]earer /, "").trim();
-      res.locals.user = jwt.verify(token, SECRET_KEY); //is res.locals similar to local storage??
+      res.locals.user = jwt.verify(token, SECRET_KEY);
       
       /** The res.locals property is an object that contains response local variables scoped to the 
        * request and because of this, it is only available to the view(s) rendered during that 
        * request/response cycle (if any). */
     }
+    console.log("GOT TO END")
     return next();
-  } catch (err) {
+  } catch (err) { console.log("SAW ERROR", err)
     return next();
   }
 }
@@ -70,11 +72,13 @@ function ensureCurrentUser(req, res, next) {
 
 function ensureCurrentUserOrAdmin(req, res, next) {
   try {
-    if (res.locals.user.username === req.params.username || res.locals.user.isAdmin === true) {
+    if (res.locals.user !== undefined && (res.locals.user.username === req.params.username || res.locals.user.isAdmin === true)) {
       return next();
     }
+    console.log("NO USER")
     throw new UnauthorizedError();
   } catch (err) {
+    console.log("SAW MIDDLEWARE ERROR", err)
     return next(err);
   } 
 }

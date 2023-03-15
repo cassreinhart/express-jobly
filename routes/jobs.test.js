@@ -210,7 +210,7 @@ describe("PATCH /jobs/:id", function () {
     const resp = await request(app)
         .patch(`/jobs/${testJobIds[0]}`)
         .send({
-          companyHandle: 'newHandle',
+          handle: 'newHandle',
         })
         .set("authorization", `Bearer ${u1Token}`);
     console.log(resp)

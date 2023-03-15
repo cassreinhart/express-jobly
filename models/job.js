@@ -114,7 +114,7 @@ class Job {
    * This is a "partial update" --- it's fine if data doesn't contain all the
    * fields; this only changes provided ones.
    *
-   * Data can include: {title, salary, equity, companyHandle}
+   * Data can include: {title, salary, equity}
    *
    * Returns {id, title, salary, equity, companyHandle}
    *
@@ -124,7 +124,7 @@ class Job {
   static async update(id, data) {
     const { setCols, values } = sqlForPartialUpdate(
         data,
-        {});
+        {companyHandle: "company_handle"});
     const idVarIdx = "$" + (values.length + 1);
 
     const querySql = `UPDATE jobs 
